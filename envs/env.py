@@ -1,5 +1,5 @@
 import numpy as np
-
+from utils.env_trap import calculate_angle_between_agents_radians
 class EnvV2:
     def __init__(self, agents_num, targets_num, row, col, safe_dis):
         # system parameter
@@ -85,35 +85,6 @@ class EnvV2:
 
         return agents_obs
 
-    def calculate_angle_between_agents_radians(self, vector_a, vector_b):
-        """
-        计算两个向量之间的夹角（以弧度为单位）。
-
-        参数:
-        - vector_a: 智能体A相对于目标的位置矢量。
-        - vector_b: 智能体B相对于目标的位置矢量。
-
-        返回:
-        - angle_rad: 两个向量之间的夹角（弧度）。
-        """
-        # 计算点积
-        dot_product = np.dot(vector_a, vector_b)
-
-        # 计算两个向量的模
-        norm_a = np.linalg.norm(vector_a)
-        norm_b = np.linalg.norm(vector_b)
-
-        # 计算余弦值
-        cos_angle = dot_product / (norm_a * norm_b)
-
-        # 为了防止因浮点运算误差导致的cos_angle微小超出[-1, 1]的范围，
-        # 使用clip函数限制cos_angle的值在这个范围内
-        cos_angle = np.clip(cos_angle, -1, 1)
-
-        # 计算夹角（以弧度为单位）
-        angle_rad = np.arccos(cos_angle)
-
-        return angle_rad
 
     def step(self, agents_action, delta_t):  # next_obs, reward, done
         agents_next_obs = {}
@@ -156,7 +127,7 @@ class EnvV2:
                     vector1 = self.agents_location[:, k] - self.targets_location[:, 0]
                     vector2 = self.agents_location[:, i] - self.targets_location[:, 0]
                     # 相对角度
-                    theta0 = self.calculate_angle_between_agents_radians(vector1, vector2)
+                    theta0 = calculate_angle_between_agents_radians(vector1, vector2)
                     reward -= abs(self.theta_standard - theta0)
                     theta += theta0
                     self.agents_theta[k][i] = theta0

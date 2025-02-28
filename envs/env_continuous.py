@@ -1,7 +1,7 @@
 import gym
 from gym import spaces
 import numpy as np
-from envs.env_core import EnvCore
+from envs.utils.env_trap import EnvTrap
 
 
 class ContinuousActionEnv(object):
@@ -11,11 +11,11 @@ class ContinuousActionEnv(object):
     """
 
     def __init__(self):
-        self.env = EnvCore()
+        self.env = EnvTrap()
         self.num_agent = self.env.agent_num
 
-        self.signal_obs_dim = self.env.obs_dim
-        self.signal_action_dim = self.env.action_dim
+        self.single_obs_dim = self.env.obs_dim
+        self.single_action_dim = self.env.action_dim
 
         # if true, action is a number 0...N, otherwise action is a one-hot N-dimensional vector
         self.discrete_action_input = False
@@ -34,7 +34,7 @@ class ContinuousActionEnv(object):
             u_action_space = spaces.Box(
                 low=-1,
                 high=+1,
-                shape=(self.signal_action_dim,),
+                shape=(self.single_action_dim,),
                 dtype=np.float32,
             )
 
@@ -45,12 +45,12 @@ class ContinuousActionEnv(object):
             self.action_space.append(total_action_space[0])
 
             # observation space
-            share_obs_dim += self.signal_obs_dim
+            share_obs_dim += self.single_obs_dim
             self.observation_space.append(
                 spaces.Box(
                     low=-np.inf,
                     high=+np.inf,
-                    shape=(self.signal_obs_dim,),
+                    shape=(self.single_obs_dim,),
                     dtype=np.float32,
                 )
             )  # [-inf,inf]

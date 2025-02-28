@@ -494,4 +494,29 @@ def get_config():
         help="by default None. set the path to pretrained model.",
     )
 
+    # EnvTrap 类特定的 env 参数
+    parser.add_argument("--max_col", type=int, default=20, help="Maximum column value for the environment")
+    parser.add_argument("--max_row", type=int, default=20, help="Maximum row value for the environment")
+    parser.add_argument("--delta_t", type=float, default=0.1, help="Time step for the environment")
+    parser.add_argument("--t_total", type=int, default=100, help="Total time steps for the environment")
+    parser.add_argument("--trap_robots_nums", type=int, default=3, help="Number of trap robots")
+    parser.add_argument("--target_robots_nums", type=int, default=1, help="Number of target robots")
+    parser.add_argument("--safe_dis", type=float, default=3.0, help="Safe distance in the environment")
+    parser.add_argument("--trap_dis", type=float, default=2.0, help="Trap distance in the environment")
+    parser.add_argument("--approach_reward_w", type=float, default=0.5, help="Approach reward weight")
+    parser.add_argument("--collision_reward_w", type=float, default=1.0, help="Collision reward weight")
+    parser.add_argument("--theta_reward_w", type=float, default=0.5, help="Theta reward weight")
+    parser.add_argument("--done_reward", type=float, default=10.0, help="Reward when the task is done")
+    '''
+           id, size, type,
+           max_linear_accelerate, max_angular_accelerate,
+           max_linear_velocity, max_angular_velocity
+           '''
+    parser.add_argument("--max_linear_accelerate", type=float, default=5.0, help="Safe distance in the environment")
+    parser.add_argument("--max_angular_accelerate", type=float, default=3, help="Safe distance in the environment")
+    parser.add_argument("--max_linear_velocity", type=float, default=1.0, help="Safe distance in the environment")
+    parser.add_argument("--max_angular_velocity", type=float, default=1.5, help="Safe distance in the environment")
+
+
+
     return parser
